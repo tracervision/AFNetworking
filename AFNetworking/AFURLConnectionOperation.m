@@ -215,6 +215,7 @@ static BOOL AFSecKeyIsEqualToKey(SecKeyRef key1, SecKeyRef key2) {
     return _pinnedCertificates;
 }
 
+#ifndef APPORTABLE
 + (NSArray *)pinnedPublicKeys {
     static NSArray *_pinnedPublicKeys = nil;
     static dispatch_once_t onceToken;
@@ -258,6 +259,7 @@ static BOOL AFSecKeyIsEqualToKey(SecKeyRef key1, SecKeyRef key2) {
     
     return _pinnedPublicKeys;
 }
+#endif
 
 - (id)initWithRequest:(NSURLRequest *)urlRequest {
     NSParameterAssert(urlRequest);
@@ -574,6 +576,7 @@ static BOOL AFSecKeyIsEqualToKey(SecKeyRef key1, SecKeyRef key2) {
 - (void)connection:(NSURLConnection *)connection
 willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
+#ifndef APPORTABLE
     if (self.authenticationChallenge) {
         self.authenticationChallenge(connection, challenge);
         return;
@@ -675,6 +678,7 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
             [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
         }
     }
+#endif
 }
 
 - (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection __unused *)connection {
